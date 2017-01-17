@@ -15,17 +15,20 @@ void error(const char *msg)
 
 int main()
 {
-    int sockfd, port, n, sz;
-    char ch, str[10], buffer[256];
+    // Initializations
+    int sockFD, portNo, n,sz;
+    char ch,str[10],buffer[256];
     struct sockaddr_in servAddr;
     struct hostent *server;
 
-    portNo = 8080;
+    // socket ()
+    portNo = 9000;
     sockFD = socket(AF_INET, SOCK_STREAM, 0);
     if (sockFD < 0) 
         error("ERROR!! Unable to open socket");
     
-    server = gethostbyname("10.0.2.10");
+    // Locate Server
+    server = gethostbyname("10.0.0.11");
     if (server == NULL)
         error("ERROR!! No such host found\n");
     
@@ -36,26 +39,23 @@ int main()
     bcopy((char *)server->h_addr, (char *)&servAddr.sin_addr.s_addr,server->h_length);
     servAddr.sin_port = htons(portNo);
 
-    if (connect(sockfd, (struct sockaddr *) &servAddr, sizeof(servAddr)) < 0) 
+    // connect()
+    if (connect(sockFD, (struct sockaddr *) &servAddr, sizeof(servAddr)) < 0) 
         error("ERROR!! Unable to connect.");
 
-    FILE *sock = fdopen(sockfd, "r+");
-    bzero(buffer, 256);
-    n = recv(sockfd, buffer, 255, 0);
+    // Receive Welcome Message from Server
+
+    FILE *sock = fdopen(sockFD, "r+");
+    bzero(buffer,256);
+    n = recv(sockFD, buffer, 255, 0);
 
     if (n < 0)
         error("ERROR!! Unable to read from socket");
+    printf("SERVER: Current level of water is - %s",buffer);
     
-    printf("SERVER: %s", buffer);
     printf("Enter the water level parameters (La,L,H,Ha,mode,pump)\n");
-    
-    char s[30];
-    
-    scanf("%s", s); // here we will also be sending the mode along with whether the pump is on or not
-    
-    n = send(sockfd, s, strlen(s), 0);
 	
     fclose(sock);
-    close(sockfd);
+    close(sockFD);
     return 0;
 }
