@@ -6,61 +6,54 @@ logging.basicConfig()
 log = logging.getLogger()
 log.setLevel(logging.INFO)
 
-REG_LA = 0
-REG_L = 16
-REG_H = 32
-REG_HA = 48
-REG_CURR = 64
-COIL_MODE = 80
-COIL_PUMP_MANUAL_ON_OFF = 81
-COIL_PUMP_STATUS = 82
-COIL_ALARM_STATUS = 83
+LA = 0
+L = 16
+H = 32
+HA = 48
+CURR = 64
+MODE = 80
+PUMP_MANUAL = 81
+PUMP_STATUS = 82
+ALARM_STATUS = 83
 
-######################################################
-### Start up the sync client
-######################################################
-
-client = ModbusClient('localhost', port=5023)
+client = ModbusClient('localhost', port=6060)
 client.connect()
 
 # If Mode is True then automatic
-client.write_coil(COIL_MODE, True)
+client.write_coil(MODE, True)
+client.write_coil(PUMP_MANUAL, True)
+client.write_coil(PUMP_STATUS, True)
+client.write_coil(ALARM_STATUS, False)
 
-client.write_coil(COIL_PUMP_MANUAL_ON_OFF, True)
-
-client.write_coil(COIL_PUMP_STATUS, True)
-
-client.write_coil(COIL_ALARM_STATUS, False)
-
-client.write_register(REG_LA, 20)
-client.write_register(REG_HA, 120)
-client.write_register(REG_L, 40)
-client.write_register(REG_H, 100)
-client.write_register(REG_CURR, 40)
+client.write_register(LA, 20)20
+client.write_register(HA, 80)120
+client.write_register(L, 30)40
+client.write_register(H, 70)100
+client.write_register(CURR, 40)
 
 t = time.time()
 
 while True:
-    mode = client.read_coils(COIL_MODE, 1).bits[0]
-    on = client.read_coils(COIL_PUMP_MANUAL_ON_OFF, 1).bits[0]
-    curr = client.read_holding_registers(REG_CURR, 1).registers[0]
+    mode = client.read_coils(MODE, 1).bits[0]
+    on = client.read_coils(PUMP_MANUAL, 1).bits[0]
+    curr = client.read_holding_registers(CURR, 1).registers[0]
     if mode == True:
         if on == True:
-            if curr < 100:
+            if curr < 70:
                 while time.time() - t < 0.1:
                     continue
                 t = time.time()
-                client.write_register(REG_CURR, curr+1)
+                client.write_register(CURR, curr+1)
             else:
-                client.write_coil(COIL_PUMP_STATUS, False)
+                client.write_coil(PUMP_STATUS, False)
         else:
-            if curr > 40:
+            if curr > 30:
                 while time.time() - t < 0.1:
                     continue
                 t = time.time()
-                client.write_register(REG_CURR, curr-1)
+                client.write_register(CURR, curr-1)
             else:
-                client.write_coil(COIL_PUMP_STATUS, True)
+                client.write_coil(PUMP_STATUS, True)
     print curr
-    if (curr == 20) || (curr == 120):
+    if (curr <= 20) || (curr >= 80):
         client.write_coil(COIL_ALARM_STATUS, True)
