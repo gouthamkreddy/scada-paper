@@ -25,10 +25,10 @@ client.write_coil(PUMP_MANUAL, True)
 client.write_coil(PUMP_STATUS, True)
 client.write_coil(ALARM_STATUS, False)
 
-client.write_register(LA, 20)20
-client.write_register(HA, 80)120
-client.write_register(L, 30)40
-client.write_register(H, 70)100
+client.write_register(LA, 20)
+client.write_register(HA, 80)
+client.write_register(L, 30)
+client.write_register(H, 70)
 client.write_register(CURR, 40)
 
 t = time.time()
@@ -55,5 +55,5 @@ while True:
             else:
                 client.write_coil(PUMP_STATUS, True)
     print curr
-    if (curr <= 20) || (curr >= 80):
+    if (curr <= 20) or (curr >= 80):
         client.write_coil(COIL_ALARM_STATUS, True)
