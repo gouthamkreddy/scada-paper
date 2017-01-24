@@ -178,5 +178,5 @@ if __name__ == '__main__':
 			w.put(item)
 		q.join()
 		w.join()
-Contact GitHub API Training Shop Blog About
-© 2017 GitHub, Inc. Terms Privacy Security Status Help
+# Contact GitHub API Training Shop Blog About
+# © 2017 GitHub, Inc. Terms Privacy Security Status Help
