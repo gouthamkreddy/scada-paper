@@ -16,7 +16,7 @@ PUMP_MANUAL = 81
 PUMP_STATUS = 82
 ALARM_STATUS = 83
 
-client = ModbusClient('localhost', port=6060)
+client = ModbusClient('10.0.2.10', port=6060)
 client.connect()
 
 # If Mode is True then automatic
