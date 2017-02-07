@@ -1,28 +1,3 @@
-# Skip to content
-# This repository
-# Search
-# Pull requests
-# Issues
-# Gist
-#  @gouthamkreddy
-#  Watch 24
-#   Star 130
-#   Fork 150 cyweb/hammer
-#  Code  Issues 1  Pull requests 0  Projects 0  Wiki  Pulse  Graphs
-# Branch: master Find file Copy pathhammer/hammer.py
-# 193a8a6  on 3 Mar 2016
-# @stefankoerner stefankoerner fix user agent typo
-# 2 contributors @cyweb @stefankoerner
-# RawBlameHistory     
-# 164 lines (141 sloc)  4.5 KB
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
-
-# python 3.3.2+ Hammer Dos Script v.1
-# by Can Yalçın
-# only for legal purpose
-
-
 from queue import Queue
 from optparse import OptionParser
 import time,sys,socket,threading,logging,urllib.request,random
@@ -178,5 +153,3 @@ if __name__ == '__main__':
 			w.put(item)
 		q.join()
 		w.join()
-# Contact GitHub API Training Shop Blog About
-# © 2017 GitHub, Inc. Terms Privacy Security Status Help
